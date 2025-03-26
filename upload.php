@@ -1,19 +1,21 @@
 <?php
-$uploadDir = "uploads/";
 
-// Vérifier si le dossier existe, sinon le créer
-if (!is_dir($uploadDir)) {
-    mkdir($uploadDir, 0777, true);
-}
+    $uploadDir = "uploads/";
 
-if (isset($_FILES["file"])) {
-    $targetFile = $uploadDir . basename($_FILES["file"]["name"]);
-    if (move_uploaded_file($_FILES["file"]["tmp_name"], $targetFile)) {
-        echo "Fichier uploadé avec succès.";
-    } else {
-        echo "Erreur lors de l'upload.";
+    // Vérifier si le dossier existe, sinon le créer
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
     }
-} else {
-    echo "Aucun fichier reçu.";
-}
-?>
+
+    if (isset($_FILES["file"])) {
+        $targetFile = $uploadDir . basename($_FILES["file"]["name"]);
+        $extension = explode("/", $_FILES["file"]["type"])[1];
+        if ($extension === "pdf" && move_uploaded_file($_FILES["file"]["tmp_name"], $targetFile)) {
+            echo "Fichier uploadé avec succès.";
+        } else {
+            echo "Erreur lors de l'upload.";
+        }
+    } else {
+        echo "Aucun fichier reçu.";
+    }
+
